@@ -129,7 +129,8 @@ const UIController = function () {
         calculatorID : '#calculator',
         toggleCalcBtn : '#toggleCalc',
         toggleClass: 'toggle',
-        calcButton: '.calcBtn',
+        // calcButton: '.calcBtn',
+        calcButtons: '#calculatorButtons',
         mainDisplay: '#displayCurrent',
         histDisplay: '#displayHistory'
     };
@@ -195,11 +196,15 @@ const Controller = function (UICtrl, DataCtrl) {
     const setEventHandlers = function(){
         document.querySelector(DOMStr.toggleCalcBtn).addEventListener('click', UICtrl.showCalc);
 
-        document.querySelectorAll(DOMStr.calcButton).forEach(cur => {
-            cur.addEventListener('click', function () {
-                mainCalc(cur.textContent);
-            })
+        document.querySelector(DOMStr.calcButtons).addEventListener('click', function(){
+            mainCalc(event.target.textContent);
         });
+
+        // document.querySelectorAll(DOMStr.calcButton).forEach(cur => {
+        //     cur.addEventListener('click', function () {
+        //         mainCalc(cur.textContent);
+        //     })
+        // });
 
 
 
