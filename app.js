@@ -196,7 +196,7 @@ const Controller = function (UICtrl, DataCtrl) {
     const setEventHandlers = function(){
         document.querySelector(DOMStr.toggleCalcBtn).addEventListener('click', UICtrl.showCalc);
 
-        document.querySelector(DOMStr.calcButtons).addEventListener('click', function(){
+        document.querySelector(DOMStr.calcButtons).addEventListener('click', function(event){
             mainCalc(event.target.textContent);
         });
 
