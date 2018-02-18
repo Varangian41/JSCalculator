@@ -54,12 +54,12 @@ const DataController = function () {
             }
         },
 
-        calculate: function (op) {
-            if(op === '+'){
+        calculate: function () {
+            if(data.operator === '+'){
                 data.currentNumber = parseFloat(data.number) + parseFloat(data.currentNumber);
-            } else if (op === '-') {
+            } else if (data.operator === '-') {
                 data.currentNumber = parseFloat(data.number) - parseFloat(data.currentNumber);
-            } else if (op === '*') {
+            } else if (data.operator === '*') {
                 data.currentNumber = parseFloat(data.number) * parseFloat(data.currentNumber);
             } else {
                 data.currentNumber = parseFloat(data.number) / parseFloat(data.currentNumber);
@@ -191,6 +191,7 @@ const UIController = function () {
 const Controller = function (UICtrl, DataCtrl) {
 
     const DOMStr = UICtrl.getDomStr();
+    const data = DataCtrl.getData();
 
 
     const setEventHandlers = function(){
@@ -227,21 +228,17 @@ const Controller = function (UICtrl, DataCtrl) {
 
         } else if (DataCtrl.checkSecond(entry)) { //Second operator calculate and update UI
 
-            let sign = DataCtrl.getOperator();
-            DataCtrl.calculate(sign);
+            DataCtrl.calculate();
             DataCtrl.insertNumber();
-            let current = DataCtrl.getData().currentNumber;
-            UICtrl.showSolution(current);
+            UICtrl.showSolution(data.currentNumber);
             DataCtrl.insertSign(entry);
             UICtrl.showNumbers(entry);
 
         } else if (DataCtrl.checkCalc(entry)) { //Calculate on equals and update UI
 
-            let sign = DataCtrl.getOperator();
-            DataCtrl.calculate(sign);
+            DataCtrl.calculate();
             DataCtrl.insertNumber();
-            let current = DataCtrl.getData().currentNumber;
-            UICtrl.showSolution(current);
+            UICtrl.showSolution(data.currentNumber);
             DataCtrl.reset(DOMStr.mainDisplay);
 
         } else if (DataCtrl.checkCE(entry)) { //Reset if ce clicked
