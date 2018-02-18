@@ -27,8 +27,10 @@ const DataController = function () {
         },
 
         insertSign: function (el) {
-            data.operator = el;
-            data.currentNumber = '';
+            if(data.currentNumber) {
+                data.operator = el;
+                data.currentNumber = '';
+            }
         },
 
         reset : function (el) {
@@ -77,13 +79,13 @@ const DataController = function () {
         },
 
         checkOperator: function (el) {
-            if ((el === '+' || el === '-' || el === '*' || el === '/') && !data.operator) {
+            if (el.match(/[\+\-\*\/]/) && !data.operator) {
                 return true;
             } else return false;
         },
 
         checkSecond: function (el) {
-            if ((el === '+' || el === '-' || el === '*' || el === '/') && data.operator) {
+            if (el.match(/[\+\-\*\/]/) && data.operator) {
                 return true;
             } else return false;
         },
@@ -128,8 +130,6 @@ const UIController = function () {
     const DOMStrings = {
         calculatorID : '#calculator',
         toggleCalcBtn : '#toggleCalc',
-        toggleClass: 'toggle',
-        // calcButton: '.calcBtn',
         calcButtons: '#calculatorButtons',
         mainDisplay: '#displayCurrent',
         histDisplay: '#displayHistory'
@@ -138,7 +138,11 @@ const UIController = function () {
     return {
 
         showCalc: function () {
-            document.querySelector(DOMStrings.calculatorID).classList.toggle(DOMStrings.toggleClass);
+            if(document.querySelector(DOMStrings.calculatorID).classList.contains('fadeIn')){
+                document.querySelector(DOMStrings.calculatorID).classList.replace('fadeIn', 'fadeOut');
+            } else {
+                document.querySelector(DOMStrings.calculatorID).classList.replace('fadeOut', 'fadeIn');
+            }
         },
 
         getDomStr: function () {
@@ -155,7 +159,12 @@ const UIController = function () {
         },
 
         showNumbers: function (el) {
-            document.querySelector(DOMStrings.mainDisplay).textContent += `${el}`;
+            if(el.match(/[\+\-\*\/]/) && document.querySelector(DOMStrings.mainDisplay).textContent.length === 0){
+                this.resetFields();
+            }
+            else {
+                document.querySelector(DOMStrings.mainDisplay).textContent += `${el}`;
+            }
         },
 
         showSolution: function (el) {
@@ -200,15 +209,6 @@ const Controller = function (UICtrl, DataCtrl) {
         document.querySelector(DOMStr.calcButtons).addEventListener('click', function(event){
             mainCalc(event.target.textContent);
         });
-
-        // document.querySelectorAll(DOMStr.calcButton).forEach(cur => {
-        //     cur.addEventListener('click', function () {
-        //         mainCalc(cur.textContent);
-        //     })
-        // });
-
-
-
     };
 
 
@@ -268,7 +268,6 @@ const Controller = function (UICtrl, DataCtrl) {
 
     return {
         init: function () {
-            console.log('app started');
             setEventHandlers();
             UICtrl.resetFields();
         }
